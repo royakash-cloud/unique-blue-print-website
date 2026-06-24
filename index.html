@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unique Blue Print — Your Neighbourhood Pharmacy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ============ DESIGN TOKENS ============ */
+  :root {
+    --ink: #1B1B16;
+    --ink-soft: #4A4A3F;
+    --paper: #F6F1E4;
+    --paper-raised: #FBF8EF;
+    --teal: #1F4E42;
+    --teal-deep: #143832;
+    --terracotta: #C1622D;
+    --terracotta-soft: #E8D9C4;
+    --sage: #DCE3D3;
+    --rule: rgba(27,27,22,0.16);
+    --rule-soft: rgba(27,27,22,0.08);
+
+    --font-display: "Source Serif 4", Georgia, serif;
+    --font-body: "Inter", -apple-system, sans-serif;
+    --font-mono: "JetBrains Mono", monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  :focus-visible {
+    outline: 2px solid var(--terracotta);
+    outline-offset: 3px;
+  }
+
+  /* texture: faint paper grain via layered gradient noise substitute */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(27,27,22,0.015) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(27,27,22,0.02) 0%, transparent 50%);
+    z-index: 0;
+  }
+
+  .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 28px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ============ HEADER / NAV ============ */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 28px;
+    max-width: 1180px;
+    margin: 0 auto;
+  }
+
+  .brand {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+
+  .brand-mark {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--terracotta);
+    background: var(--terracotta-soft);
+    padding: 3px 7px;
+    border-radius: 3px;
+  }
+
+  .brand-name {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--teal-deep);
+  }
+
+  nav.links {
+    display: flex;
+    gap: 28px;
+    font-size: 14.5px;
+    font-weight: 500;
+    color: var(--ink-soft);
+  }
+  nav.links a:hover { color: var(--teal-deep); }
+
+  .nav-cta {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 14px;
+    padding: 10px 18px;
+    border-radius: 3px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+  }
+  .btn:hover { transform: translateY(-1px); }
+
+  .btn-whatsapp {
+    background: var(--teal);
+    color: var(--paper-raised);
+  }
+  .btn-whatsapp:hover { background: var(--teal-deep); }
+
+  .btn-ghost {
+    background: transparent;
+    border: 1px solid var(--rule);
+    color: var(--ink);
+  }
+
+  .menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    color: var(--ink);
+  }
+
+  /* ============ HERO: the ledger ============ */
+  .hero {
+    padding: 64px 0 56px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 56px;
+    align-items: center;
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .eyebrow::before {
+    content: "";
+    width: 22px;
+    height: 1px;
+    background: var(--terracotta);
+  }
+
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: 46px;
+    line-height: 1.14;
+    font-weight: 600;
+    color: var(--teal-deep);
+    letter-spacing: -0.01em;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--terracotta);
+  }
+
+  .hero p.lede {
+    margin-top: 20px;
+    font-size: 17px;
+    color: var(--ink-soft);
+    max-width: 480px;
+  }
+
+  .hero-actions {
+    margin-top: 32px;
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .btn-lg {
+    font-size: 15px;
+    padding: 13px 22px;
+  }
+
+  /* the ledger card */
+  .ledger {
+    background: var(--paper-raised);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    box-shadow: 0 18px 40px -24px rgba(27,27,22,0.35);
+    overflow: hidden;
+  }
+
+  .ledger-head {
+    background: var(--teal-deep);
+    color: var(--paper-raised);
+    padding: 14px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.05em;
+  }
+  .ledger-head .dot { color: var(--terracotta); }
+
+  .ledger-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 16px 20px;
+    border-bottom: 1px dashed var(--rule-soft);
+    font-size: 14.5px;
+  }
+  .ledger-row:last-child { border-bottom: none; }
+
+  .ledger-row .label {
+    color: var(--ink-soft);
+  }
+  .ledger-row .value {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    color: var(--teal-deep);
+    text-align: right;
+  }
+  .ledger-row .value.pending {
+    color: var(--terracotta);
+  }
+
+  .ledger-foot {
+    padding: 14px 20px;
+    background: var(--sage);
+    font-size: 12.5px;
+    color: var(--teal-deep);
+    font-family: var(--font-mono);
+  }
+
+  /* ============ SECTION SCAFFOLDING ============ */
+  section {
+    padding: 72px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  section:last-of-type { border-bottom: none; }
+
+  .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 40px;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .section-head .eyebrow { margin-bottom: 10px; }
+
+  .section-head h2 {
+    font-family: var(--font-display);
+    font-size: 30px;
+    font-weight: 600;
+    color: var(--teal-deep);
+  }
+
+  .section-head p {
+    color: var(--ink-soft);
+    max-width: 460px;
+    font-size: 15px;
+  }
+
+  /* ============ WIDGETS GRID (the shelf) ============ */
+  .shelf {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .jar {
+    background: var(--paper-raised);
+    padding: 28px 26px;
+    position: relative;
+    transition: background 0.15s ease;
+  }
+  .jar:hover { background: var(--sage); }
+
+  .jar-tag {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 2px;
+    display: inline-block;
+    margin-bottom: 14px;
+  }
+  .jar-tag.live {
+    background: var(--teal);
+    color: var(--paper-raised);
+  }
+  .jar-tag.soon {
+    background: var(--terracotta-soft);
+    color: var(--terracotta);
+  }
+
+  .jar h3 {
+    font-family: var(--font-display);
+    font-size: 19px;
+    font-weight: 600;
+    color: var(--teal-deep);
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+
+  .jar p {
+    font-size: 13.8px;
+    color: var(--ink-soft);
+    margin-bottom: 16px;
+  }
+
+  .jar-link {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--terracotta);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .jar-link.disabled {
+    color: var(--ink-soft);
+    opacity: 0.6;
+    cursor: default;
+  }
+  .jar-link svg { transition: transform 0.15s ease; }
+  .jar-link:hover svg { transform: translateX(3px); }
+
+  /* ============ AWARENESS / chronic disease ============ */
+  .almanac {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+  }
+
+  .almanac-card {
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 22px;
+    background: var(--paper-raised);
+  }
+
+  .almanac-card .num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--terracotta);
+    margin-bottom: 10px;
+    letter-spacing: 0.05em;
+  }
+
+  .almanac-card h4 {
+    font-family: var(--font-display);
+    font-size: 16.5px;
+    font-weight: 600;
+    color: var(--teal-deep);
+    margin-bottom: 8px;
+  }
+
+  .almanac-card p {
+    font-size: 13.2px;
+    color: var(--ink-soft);
+  }
+
+  /* ============ COUNSELLING / whatsapp flow ============ */
+  .counter {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+
+  .counter-copy h2 { margin-bottom: 16px; }
+
+  .counter-copy .pharmacist-line {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 22px 0 26px;
+    padding: 14px 16px;
+    background: var(--sage);
+    border-radius: 4px;
+    font-size: 13.8px;
+  }
+
+  .pharmacist-badge {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    background: var(--teal-deep);
+    color: var(--paper-raised);
+    padding: 4px 8px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  .steps {
+    list-style: none;
+  }
+  .steps li {
+    display: flex;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px dashed var(--rule-soft);
+    font-size: 14.5px;
+    color: var(--ink-soft);
+  }
+  .steps li:last-child { border-bottom: none; }
+  .steps .step-num {
+    font-family: var(--font-mono);
+    color: var(--terracotta);
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+  .steps strong { color: var(--ink); }
+
+  .counter-card {
+    background: var(--paper-raised);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 32px;
+    box-shadow: 0 18px 40px -28px rgba(27,27,22,0.3);
+  }
+
+  .counter-card h3 {
+    font-family: var(--font-display);
+    font-size: 20px;
+    color: var(--teal-deep);
+    margin-bottom: 10px;
+  }
+  .counter-card p {
+    font-size: 13.8px;
+    color: var(--ink-soft);
+    margin-bottom: 22px;
+  }
+
+  .privacy-note {
+    margin-top: 20px;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    padding-top: 18px;
+    border-top: 1px solid var(--rule-soft);
+  }
+
+  /* ============ FOOTER ============ */
+  footer {
+    background: var(--teal-deep);
+    color: var(--sage);
+    padding: 48px 0 28px;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr 1fr 1fr;
+    gap: 32px;
+    margin-bottom: 36px;
+  }
+
+  footer h5 {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 16px;
+  }
+
+  footer .brand-name { color: var(--paper-raised); margin-bottom: 10px; }
+  footer p.tag { font-size: 13.5px; color: rgba(220,227,211,0.75); max-width: 280px; }
+
+  footer ul { list-style: none; font-size: 13.5px; }
+  footer ul li { margin-bottom: 9px; color: rgba(220,227,211,0.85); }
+  footer a:hover { color: var(--paper-raised); }
+
+  .footer-bottom {
+    padding-top: 24px;
+    border-top: 1px solid rgba(220,227,211,0.15);
+    display: flex;
+    justify-content: space-between;
+    font-size: 12.5px;
+    color: rgba(220,227,211,0.55);
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  /* ============ FAB ============ */
+  .fab {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--teal);
+    color: var(--paper-raised);
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 28px -8px rgba(20,56,50,0.55);
+    z-index: 60;
+    cursor: pointer;
+    border: none;
+    transition: transform 0.15s ease;
+  }
+  .fab:hover { transform: scale(1.06); }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 980px) {
+    nav.links { display: none; }
+    .menu-toggle { display: block; }
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 36px; }
+    .shelf { grid-template-columns: repeat(2, 1fr); }
+    .almanac { grid-template-columns: repeat(2, 1fr); }
+    .counter { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 600px) {
+    .wrap { padding: 0 18px; }
+    .nav-inner { padding: 16px 18px; }
+    .hero { padding: 40px 0 36px; }
+    .hero h1 { font-size: 29px; }
+    .hero p.lede { font-size: 15.5px; }
+    .shelf { grid-template-columns: 1fr; }
+    .almanac { grid-template-columns: 1fr; }
+    section { padding: 48px 0; }
+    .btn-lg { width: 100%; justify-content: center; }
+    .hero-actions { flex-direction: column; }
+    .footer-grid { grid-template-columns: 1fr; gap: 24px; }
+    .section-head h2 { font-size: 24px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; scroll-behavior: auto !important; }
+  }
+</style>
+</head>
+<body>
+
+<!--
+  ============================================================
+  CONFIG: change these two values when ready to go live.
+  WHATSAPP_NUMBER must be in international format, no symbols.
+  ============================================================
+-->
+<script>
+  const CONFIG = {
+    WHATSAPP_NUMBER: "919999999999", // placeholder — swap for the Business number
+    PHARMACY_NAME: "Unique Blue Print",
+    LOCATION: "South Kolkata"
+  };
+</script>
+
+<header>
+  <div class="nav-inner">
+    <div class="brand">
+      <span class="brand-mark">℞</span>
+      <span class="brand-name">Unique Blue Print</span>
+    </div>
+    <nav class="links">
+      <a href="#widgets">Tools</a>
+      <a href="#awareness">Health Guide</a>
+      <a href="#counselling">Ask the Pharmacist</a>
+      <a href="#order">Order</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-ghost" href="#order">Order on WhatsApp</a>
+      <a class="btn btn-whatsapp" href="#counselling">Send Prescription</a>
+    </div>
+    <button class="menu-toggle" aria-label="Open menu">☰</button>
+  </div>
+</header>
+
+<main>
+  <!-- ============ HERO ============ -->
+  <section class="hero" style="border-bottom: 1px solid var(--rule); padding-top: 64px;">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow">South Kolkata · Est. neighbourhood pharmacy</div>
+        <h1>Medicine advice that knows <em>your</em> family,<br>not just your symptoms.</h1>
+        <p class="lede">Free health tools, plain-language guidance on long-term conditions, and a direct line to a pharmacist with 10+ years behind the counter — all without you having to leave WhatsApp.</p>
+        <div class="hero-actions">
+          <a href="#widgets" class="btn btn-whatsapp btn-lg">Explore the tools</a>
+          <a href="#order" class="btn btn-ghost btn-lg">Order medicine →</a>
+        </div>
+      </div>
+
+      <div class="ledger" aria-hidden="true">
+        <div class="ledger-head">
+          <span>REGISTER · TODAY</span>
+          <span class="dot">●</span>
+        </div>
+        <div class="ledger-row">
+          <span class="label">Cycle & fertility tracker</span>
+          <span class="value">Live</span>
+        </div>
+        <div class="ledger-row">
+          <span class="label">Rabies vaccine date calculator</span>
+          <span class="value">Live</span>
+        </div>
+        <div class="ledger-row">
+          <span class="label">Diabetes dosage timing guide</span>
+          <span class="value pending">Building</span>
+        </div>
+        <div class="ledger-row">
+          <span class="label">Child immunisation tracker</span>
+          <span class="value pending">Planned</span>
+        </div>
+        <div class="ledger-foot">+ new tools added monthly, no app required</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WIDGETS / THE SHELF ============ -->
+  <section id="widgets">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">The shelf</div>
+          <h2>Tools you can use in two minutes</h2>
+        </div>
+        <p>Small, focused calculators and trackers — built one at a time, each one solving a single real question patients ask us at the counter.</p>
+      </div>
+
+      <div class="shelf">
+        <div class="jar">
+          <span class="jar-tag live">Live</span>
+          <h3>Couple's Fertility & Cycle Awareness</h3>
+          <p>Understand fertile windows, cycle patterns, and what's worth tracking — built for couples planning together, not just one partner.</p>
+          <a class="jar-link" href="#">Open tool <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        </div>
+
+        <div class="jar">
+          <span class="jar-tag live">Live</span>
+          <h3>Rabies Vaccine Date Calculator</h3>
+          <p>Enter your first dose date — get the full post-exposure schedule (Day 0, 3, 7, 14, 28) with reminders you can save or share.</p>
+          <a class="jar-link" href="#">Open tool <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        </div>
+
+        <div class="jar">
+          <span class="jar-tag soon">Building</span>
+          <h3>Diabetes Medicine Timing Guide</h3>
+          <p>Which tablets go before food, which go after, and what to do if you miss a dose — organised by the brands stocked locally.</p>
+          <span class="jar-link disabled">Coming soon</span>
+        </div>
+
+        <div class="jar">
+          <span class="jar-tag soon">Planned</span>
+          <h3>Child Immunisation Tracker</h3>
+          <p>Track your child's vaccine schedule against the national guidelines, with gentle reminders before each due date.</p>
+          <span class="jar-link disabled">Coming soon</span>
+        </div>
+
+        <div class="jar">
+          <span class="jar-tag soon">Planned</span>
+          <h3>Blood Pressure Log</h3>
+          <p>A simple weekly log to bring to your doctor — patterns matter more than single readings.</p>
+          <span class="jar-link disabled">Coming soon</span>
+        </div>
+
+        <div class="jar">
+          <span class="jar-tag soon">Planned</span>
+          <h3>Drug Interaction Quick-Check</h3>
+          <p>A starting point before combining two medicines — always confirmed with our pharmacist before you take anything new.</p>
+          <span class="jar-link disabled">Coming soon</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ AWARENESS / CHRONIC DISEASE ============ -->
+  <section id="awareness">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">The almanac</div>
+          <h2>Living with a long-term condition</h2>
+        </div>
+        <p>Plain-language guides on the conditions we see most at the counter — written to help you understand your treatment, not replace your doctor.</p>
+      </div>
+
+      <div class="almanac">
+        <div class="almanac-card">
+          <div class="num">01</div>
+          <h4>Type 2 Diabetes</h4>
+          <p>Daily management, diet notes, and what your HbA1c number actually means.</p>
+        </div>
+        <div class="almanac-card">
+          <div class="num">02</div>
+          <h4>Hypertension</h4>
+          <p>Why consistent timing matters more than the exact hour, and home-monitoring tips.</p>
+        </div>
+        <div class="almanac-card">
+          <div class="num">03</div>
+          <h4>Thyroid Disorders</h4>
+          <p>Hypo vs hyperthyroidism, and why levothyroxine timing around food matters.</p>
+        </div>
+        <div class="almanac-card">
+          <div class="num">04</div>
+          <h4>Asthma & COPD</h4>
+          <p>Inhaler technique, spacer use, and recognising when symptoms need urgent care.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ COUNSELLING / SEND PRESCRIPTION ============ -->
+  <section id="counselling">
+    <div class="wrap counter">
+      <div class="counter-copy">
+        <div class="eyebrow">Ask the pharmacist</div>
+        <h2>Send your prescription. Get it explained — not just filled.</h2>
+        <div class="pharmacist-line">
+          <span class="pharmacist-badge">10+ YRS</span>
+          <span>Reviewed personally by a registered pharmacist before any guidance is sent back to you.</span>
+        </div>
+        <ol class="steps">
+          <li><span class="step-num">01</span><span><strong>Tap the WhatsApp button</strong> — opens a chat with our pharmacy's business line, not a personal number.</span></li>
+          <li><span class="step-num">02</span><span><strong>Share a photo of your prescription</strong> or describe your symptoms in your own words, Bengali or English.</span></li>
+          <li><span class="step-num">03</span><span><strong>Get an initial read-back</strong> on dosage, timing, and what to expect — confirmed by the pharmacist before anything is dispensed.</span></li>
+        </ol>
+      </div>
+
+      <div class="counter-card">
+        <h3>Start a consultation</h3>
+        <p>Available evenings, 6–10 PM, for direct counselling. Messages outside these hours are read first thing the next morning.</p>
+        <a class="btn btn-whatsapp btn-lg" id="prescription-cta" href="#" style="width:100%; justify-content:center;">
+          Send Prescription on WhatsApp
+        </a>
+        <div class="privacy-note">
+          <span>🔒</span>
+          <span>This opens our dedicated pharmacy WhatsApp line. Your number and message stay between you and the pharmacy — never shown publicly.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ORDER ============ -->
+  <section id="order">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Local delivery</div>
+          <h2>Order your regular medicines</h2>
+        </div>
+        <p>For repeat orders and local delivery within South Kolkata — no app, no account, just WhatsApp.</p>
+      </div>
+      <div class="counter-card" style="max-width: 560px;">
+        <h3>Place an order</h3>
+        <p>Send us your medicine list or a photo of your last bill, and let us know your delivery address. We'll confirm availability and price before dispatch.</p>
+        <a class="btn btn-whatsapp btn-lg" id="order-cta" href="#" style="width:100%; justify-content:center;">
+          Order on WhatsApp
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="brand-name" style="font-family: var(--font-display); font-size: 19px; font-weight: 600;">Unique Blue Print</div>
+        <p class="tag">An independent pharmacy in South Kolkata, built on counter-level trust — now extended online, one tool at a time.</p>
+      </div>
+      <div>
+        <h5>Tools</h5>
+        <ul>
+          <li><a href="#widgets">Cycle & fertility</a></li>
+          <li><a href="#widgets">Rabies calculator</a></li>
+          <li><a href="#widgets">All tools</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Guide</h5>
+        <ul>
+          <li><a href="#awareness">Diabetes</a></li>
+          <li><a href="#awareness">Hypertension</a></li>
+          <li><a href="#awareness">Thyroid</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Talk to us</h5>
+        <ul>
+          <li><a href="#counselling">Send a prescription</a></li>
+          <li><a href="#order">Order medicine</a></li>
+          <li>Open evenings 6–10 PM</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Unique Blue Print Pharmacy. For informational purposes only — not a substitute for in-person medical advice.</span>
+      <span>Prototype build</span>
+    </div>
+  </div>
+</footer>
+
+<button class="fab" id="fab-whatsapp" aria-label="Chat on WhatsApp">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21h.005c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0012.04 2zm5.71 14.07c-.24.68-1.4 1.3-1.93 1.38-.49.08-1.11.11-1.79-.11-.41-.13-.94-.31-1.62-.61-2.85-1.23-4.71-4.13-4.85-4.32-.14-.19-1.16-1.54-1.16-2.94s.73-2.08.99-2.36c.26-.28.56-.35.75-.35.19 0 .38 0 .54.01.17.01.41-.07.64.49.24.58.81 2 .88 2.14.07.14.12.31.02.5-.1.19-.15.31-.29.48-.14.17-.3.38-.43.51-.14.14-.29.29-.12.57.17.28.76 1.25 1.63 2.02 1.12 1 2.06 1.31 2.35 1.46.29.14.46.12.63-.05.17-.17.71-.83.9-1.11.19-.29.38-.24.64-.14.26.1 1.66.78 1.94.93.29.14.48.21.55.33.07.12.07.69-.17 1.37z"/></svg>
+</button>
+
+<script>
+  // ============ WhatsApp deep link wiring ============
+  function buildWaLink(number, message) {
+    return `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
+  }
+
+  document.getElementById('prescription-cta').href = buildWaLink(
+    CONFIG.WHATSAPP_NUMBER,
+    `Hi ${CONFIG.PHARMACY_NAME}, I'd like to send a prescription for review.`
+  );
+
+  document.getElementById('order-cta').href = buildWaLink(
+    CONFIG.WHATSAPP_NUMBER,
+    `Hi ${CONFIG.PHARMACY_NAME}, I'd like to place a medicine order for local delivery.`
+  );
+
+  document.getElementById('fab-whatsapp').addEventListener('click', () => {
+    window.open(buildWaLink(CONFIG.WHATSAPP_NUMBER, `Hi ${CONFIG.PHARMACY_NAME}, I have a question.`), '_blank');
+  });
+
+  // mobile menu (placeholder behaviour for prototype)
+  document.querySelector('.menu-toggle').addEventListener('click', () => {
+    const nav = document.querySelector('nav.links');
+    const isOpen = nav.style.display === 'flex';
+    nav.style.display = isOpen ? 'none' : 'flex';
+    nav.style.flexDirection = 'column';
+    nav.style.position = 'absolute';
+    nav.style.top = '100%';
+    nav.style.left = '0';
+    nav.style.right = '0';
+    nav.style.background = 'var(--paper)';
+    nav.style.padding = '20px 28px';
+    nav.style.borderBottom = '1px solid var(--rule)';
+    nav.style.gap = '16px';
+  });
+</script>
+
+</body>
+</html>
